@@ -1,13 +1,11 @@
-// etc/password
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include "structs.h"
 
-
-
-char** Show_users(){
+struct Data* Show_users(){
 	int fd = open("/etc/passwd", O_RDONLY);
 
 	int offset = lseek(fd, 0, SEEK_END);
@@ -36,15 +34,13 @@ char** Show_users(){
 			if(*(string+i) == '\n')
 				cnt_next--;
 	
-	char **users = malloc(cnt_next*2+1);	
+	struct Data *Users = malloc(sizeof(struct Data));
+	Users->data = malloc(cnt_next*2);
+	Users->len = cnt_next*2;
 
-	users[0] = malloc(10);
-	char str_cnt[10];
-	sprintf(str_cnt, "%d", cnt_next*2+1);
-	memcpy(users[0], str_cnt, 10); 
 	
 	size_t cnt_d = 0;
-	size_t i = 1;
+	size_t i = 0;
 	size_t ok = 1;
 	while(place <= offset){
 		place++;
@@ -61,8 +57,9 @@ char** Show_users(){
 		}
 			
 		if( (cnt_d == 1 || cnt_d == 6) && ok ){ //if its name or home dir
-			users[i] = malloc(place-pplace);
-			memcpy(users[i], string+pplace, place-pplace);
+			Users->data[i] = malloc(place-pplace+10);
+			memset(Users->data[i], 0, place-pplace+10);
+			memcpy(Users->data[i], string+pplace, place-pplace);
 			pplace = place+1;
 			i++;
 			ok = 0;
@@ -71,5 +68,5 @@ char** Show_users(){
 
 	free(string);
 	close(fd);
-	return users;
+	return Users;
 }

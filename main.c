@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
-
+#include "structs.h"
 
 /*
 void Show_users();
@@ -25,7 +25,8 @@ void Error_into();
 */
 
 char* Show_help();
-char** Show_users();
+struct Data* Show_users();
+struct Data* Show_processes();
 
 int main(int argc, char *argv[]){
 
@@ -75,11 +76,10 @@ int main(int argc, char *argv[]){
 	}
 
 	printf("%s\n\n", Show_help());
-	char** u = Show_users();
-	int cnt = atoi(u[0]);
-	for(int i=1; i<cnt; i++){
-		printf("%20s", u[i]);
-		if(i%2==0)
+	struct Data *u = Show_users();
+	for(int i=0; i<u->len; i++){
+		printf("%20s", u->data[i]);
+		if(i%2!=0)
 			printf("\n");
 	}
 	
