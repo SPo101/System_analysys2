@@ -1,8 +1,12 @@
 FUNCTIONS = help.c error.c log.c users.c processes.c main.c
 
-all: 
+all: check_dir
 	@cc $(FUNCTIONS) -c
 	@cc $(FUNCTIONS:.c=.o) -o executable
+	@mv *.o ./.obj
+	@mv executable ./.build
 	
+check_dir:
+	@./create_dirs.sh
 clean:
-	@rm -f *.o executable
+	@rm -fr .obj .build

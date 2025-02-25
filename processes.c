@@ -26,7 +26,6 @@ struct Data* Show_processes(){
 	Processes->data = (char**) malloc(filecnt * sizeof(char*));
 	Processes->len = filecnt;
 
-
 	for(int i=0; i<filecnt; i++){
 		sprintf(procid, "/proc/%s/status", listproc[i]->d_name);
 
@@ -50,14 +49,3 @@ struct Data* Show_processes(){
 	free(listproc);
 	return Processes;
 }
-
-
-/*
-int main(){
-	struct Data *proc= Show_processes();
-	printf("%d\n", proc->len);
-	for(int i=0; i<proc->len; i++)
-		printf("%d %s\n", i, proc->data[i]);
-
-}
-*/
