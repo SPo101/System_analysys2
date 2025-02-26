@@ -3,30 +3,14 @@
 #include <getopt.h>
 #include "structs.h"
 
-/*
-void Show_users();
-	return text, errors;
+#define CNT_ARGS 2
+#define CNT_FUNC 3
 
-void Show_processes();
-	return text, errors;
-
-void Show_help();
-	return text;
-
-void Log_into();
-	check path
-	call show_smth
-	write output into file
-
-void Error_into();
-	check path
-	call show_smth
-	wrire errors into file
-*/
-
-char* Show_help();
+struct Data* Show_help();
 struct Data* Show_users();
 struct Data* Show_processes();
+int Log_into(char*, struct Data* (*Func[]) (), int);
+int Error_into(char*, struct Data* (*Func[]) (), int);
 
 int main(int argc, char *argv[]){
 
@@ -42,11 +26,13 @@ int main(int argc, char *argv[]){
 		{"log", 	required_argument, 	0, 'l'},
 		{"errors", 	required_argument, 	0, 'e'}
 	};
+
 	static char *Short_options = "uphl:e:";
 	int Option_index = 0;
-	int cnt_args = sizeof(Long_options)/sizeof(struct option);
-	char *Args[cnt_args];
-	for(int i=0; i<cnt_args; i++)
+
+	struct Data* (*Functions[CNT_FUNC]) () = {NULL, NULL, NULL};
+	char *Args[CNT_ARGS];
+	for(int i=0; i<CNT_ARGS; i++)
 		Args[i] = "0";
 	
 	while(1){
@@ -55,34 +41,42 @@ int main(int argc, char *argv[]){
 			break;
 		
 		switch(Option){
+			case 'h':
+				Functions[0] = Show_help;
+				break;
 			case 'u':
-				Args[0] = "1";
+				Functions[1] = Show_users;
 				break;
 			case 'p':
-				Args[1] = "1";
-				break;
-			case 'h':
-				Args[2] = "1";
+				Functions[2] = Show_processes;
 				break;
 			case 'l':
-				Args[3] = optarg;
+				Args[0] = optarg;
 				break;
 			case 'e':
-				Args[4] = optarg;
+				Args[1] = optarg;
 				break;
 			case '?':
 				break;
 		}
 	}
+	
 
-	printf("%s\n\n", Show_help());
-	struct Data *u = Show_users();
-	for(int i=0; i<u->len; i++){
-		printf("%20s", u->data[i]);
-		if(i%2!=0)
-			printf("\n");
+	if( Args[0] != "0" )
+		Log_into(Args[0], Functions, CNT_FUNC);
+	if( Args[1] != "0" )
+		Error_into(Args[1], Functions, CNT_FUNC);
+	else{
+		struct Data *func;
+		for(int i=0; i<CNT_FUNC; i++)
+			if(Functions[i] != NULL){
+				func = Functions[i]();
+				for(int j=0; j<func->len; j++)
+					printf("%s\n", func->data[j]);
+			}
 	}
 	
+	exit(EXIT_SUCCESS);
 }
 
 

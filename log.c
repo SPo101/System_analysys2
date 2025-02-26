@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include "structs.h"
+
+int Log_into(char *path, struct Data* (*Functions[]) (), int cnt){
+/*
+check path
+call show_smth
+write output into file
+*/
+	int fd = open(path, O_WRONLY, O_APPEND|O_CREAT);
+	if(fd == -1){
+		perror("Error with opening file");
+		exit(EXIT_FAILURE);
+	}
+
+	struct Data *func;
+	for(int i=0; i<cnt; i++)
+		if(Functions[i] != NULL){
+			func = Functions[i]();
+			for(int j=0; j<func->len; j++)
+				printf("%s\n", func->data[j]);
+		}
+
+	close(fd);
+	return 0;
+}
