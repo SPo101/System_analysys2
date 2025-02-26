@@ -64,15 +64,23 @@ int main(int argc, char *argv[]){
 
 	if( Args[0] != "0" )
 		Log_into(Args[0], Functions, CNT_FUNC);
-	if( Args[1] != "0" )
-		Error_into(Args[1], Functions, CNT_FUNC);
+	//if( Args[1] != "0" )
+		//Error_into(Args[1], Functions, CNT_FUNC);
 	else{
 		struct Data *func;
 		for(int i=0; i<CNT_FUNC; i++)
 			if(Functions[i] != NULL){
 				func = Functions[i]();
-				for(int j=0; j<func->len; j++)
-					printf("%s\n", func->data[j]);
+				for(int j=0; j<func->len; j++){
+					if(i!=1)//for users and their dirs
+						printf("%s\n", func->data[j]);
+					else{
+						printf("%30s", func->data[j]);
+						if(j%2!=0)
+							printf("\n");
+					}
+				}
+				free(func);
 			}
 	}
 	

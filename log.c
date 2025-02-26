@@ -20,8 +20,16 @@ write output into file
 	for(int i=0; i<cnt; i++)
 		if(Functions[i] != NULL){
 			func = Functions[i]();
-			for(int j=0; j<func->len; j++)
-				printf("%s\n", func->data[j]);
+			for(int j=0; j<func->len; j++){
+				if(i!=1)//for users and their dirs
+					dprintf(fd, "%s\n", func->data[j]);
+				else{
+					dprintf(fd, "%30s", func->data[j]);
+					if(j%2!=0)
+						dprintf(fd, "\n");
+				}
+			}
+			free(func);
 		}
 
 	close(fd);
