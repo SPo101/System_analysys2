@@ -21,15 +21,8 @@ int Error_into(char *path, struct Data* (*Functions[]) (), int cnt){
 				continue;
 			}
 				
-			for(int j=0; j<func->len; j++){
-				if(i!=1)
-					dprintf(fd, "%s\n", func->errs[j]);
-				else{//for users and their dirs
-					dprintf(fd, "%30s", func->errs[j]);
-					if(j%2!=0)
-						dprintf(fd, "\n");
-				}
-			}
+			for(int j=0; j<func->len; j++)
+				dprintf(fd, "%s\n", func->errs[j]);
 			free(func);
 		}
 

@@ -13,16 +13,20 @@
 #endif
 
 struct Data* Show_processes(){
+	char procid[PATH_MAX];//process id
+	char nameproc[PATH_MAX];//process name
+	struct Data  *Processes= malloc(sizeof(struct Data));
+
+
 	struct dirent **listproc;//list of pid's
 	ssize_t filecnt = scandir("/proc", &listproc, NULL, alphasort);
 	if(filecnt < 0){
-		exit(-1);
+		Processes->errs = malloc(1);
+		Processes->errs[0] = "Cant open /proc dir";
+		Processes->len = 1;
+		return Processes;
 	}
 
-	char procid[PATH_MAX];//process id
-	char nameproc[PATH_MAX];//process name
-
-	struct Data  *Processes= malloc(sizeof(struct Data));
 	Processes->data = (char**) malloc(filecnt * sizeof(char*));
 	Processes->len = filecnt;
 
