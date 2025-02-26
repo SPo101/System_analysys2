@@ -72,9 +72,9 @@ int main(int argc, char *argv[]){
 			if(Functions[i] != NULL){
 				func = Functions[i]();
 				for(int j=0; j<func->len; j++){
-					if(i!=1)//for users and their dirs
+					if(i!=1)
 						printf("%s\n", func->data[j]);
-					else{
+					else{//for users and their dirs
 						printf("%30s", func->data[j]);
 						if(j%2!=0)
 							printf("\n");
