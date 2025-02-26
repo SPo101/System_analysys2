@@ -12,7 +12,7 @@ write output into file
 */
 	int fd = open(path, O_WRONLY, O_APPEND|O_CREAT);
 	if(fd == -1){
-		perror("Error with opening file");
+		perror("Log: Error with opening file");
 		exit(EXIT_FAILURE);
 	}
 
@@ -20,6 +20,12 @@ write output into file
 	for(int i=0; i<cnt; i++)
 		if(Functions[i] != NULL){
 			func = Functions[i]();
+			if(func->data == NULL){
+				printf("No data yet!\n");
+				free(func);
+				continue;
+			}
+
 			for(int j=0; j<func->len; j++){
 				if(i!=1)
 					dprintf(fd, "%s\n", func->data[j]);

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include <string.h>
 #include "structs.h"
 
 #define CNT_ARGS 2
@@ -62,11 +63,12 @@ int main(int argc, char *argv[]){
 	}
 	
 
-	if( Args[0] != "0" )
+	if( strcmp(Args[0], "0") != 0 )
 		Log_into(Args[0], Functions, CNT_FUNC);
-	//if( Args[1] != "0" )
-		//Error_into(Args[1], Functions, CNT_FUNC);
-	else{
+	if( strcmp(Args[1], "0") != 0 )
+		Error_into(Args[1], Functions, CNT_FUNC);
+
+	if(( strcmp(Args[0], "0") == 0) && (strcmp(Args[1], "0") == 0 )){
 		struct Data *func;
 		for(int i=0; i<CNT_FUNC; i++)
 			if(Functions[i] != NULL){
