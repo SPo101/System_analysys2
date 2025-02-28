@@ -73,6 +73,11 @@ int main(int argc, char *argv[]){
 		for(int i=0; i<CNT_FUNC; i++)
 			if(Functions[i] != NULL){
 				func = Functions[i]();
+				if(func->data==NULL){
+					printf("No data yet!\n");
+					free(func);
+					continue;
+				}
 				for(int j=0; j<func->len; j++){
 					if(i!=1)
 						printf("%s\n", func->data[j]);
