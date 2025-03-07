@@ -5,7 +5,7 @@
 #include "structs.h"
 
 int Error_into(char *path, struct Data* (*Functions[]) (), int cnt){
-	int fd = open(path, O_WRONLY, O_APPEND|O_CREAT);
+	int fd = open(path, O_WRONLY|O_APPEND|O_CREAT);
 	if(fd == -1){
 		perror("Log error:Error with opening file");
 		exit(EXIT_FAILURE);

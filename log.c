@@ -5,12 +5,7 @@
 #include "structs.h"
 
 int Log_into(char *path, struct Data* (*Functions[]) (), int cnt){
-/*
-check path
-call show_smth
-write output into file
-*/
-	int fd = open(path, O_WRONLY, O_APPEND|O_CREAT);
+	int fd = open(path, O_WRONLY|O_APPEND|O_CREAT);
 	if(fd == -1){
 		perror("Log: Error with opening file");
 		exit(EXIT_FAILURE);
