@@ -1,11 +1,16 @@
-FUNCTIONS = help.c error.c log.c users.c processes.c main.c
+CC := /usr/bin/gcc
+BDIR = ./.build/
+SDIR = ./src/
+ODIR = ./.obj/
+FILES = help error log users processes main
+EXE_NAME = executable
 
-all: check_dir
-	@cc $(FUNCTIONS) -c 
-	@cc $(FUNCTIONS:.c=.o) -o executable
-	@mv *.o ./.obj
-	@mv executable ./.build
+all: check_dir $(FILES)
+	@$(CC) -o $(BDIR)$(EXE_NAME) $(ODIR)*
 	
+$(FILES):
+	@$(CC) $(SDIR)$(@:%=%.c) -c -o $(ODIR)$(@:%=%.o)
+
 check_dir:
 	@./create_dirs.sh
 clean:
